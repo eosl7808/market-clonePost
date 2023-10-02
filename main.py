@@ -11,7 +11,7 @@ cur=con.cursor()
 
 # 배포용 테이블 생성 로직
 cur.execute(f"""
-            CREATE TABLE items(
+            CREATE TABLE IF NOT EXISTS items(
                 id INTERGER PRIMARY KEY,
                 title TEXT NOT NULL,
                 image BLOB,
