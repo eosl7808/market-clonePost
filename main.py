@@ -12,7 +12,7 @@ cur=con.cursor()
 # 배포용 테이블 생성 로직
 cur.execute(f"""
             CREATE TABLE IF NOT EXISTS items(
-                id INTERGER PRIMARY KEY,
+                id INTEGER PRIMARY KEY,
                 title TEXT NOT NULL,
                 image BLOB,
                 price INTEGER NOT NULL,
@@ -70,7 +70,17 @@ async def get_image(item_id):
     
     return Response(content=bytes.fromhex(image_bytes), media_type='image/*')
 
-
-
+@app.post('/signup')
+def signup(id:Annotated[str,Form()],
+           password:Annotated[str,Form()],
+           name:Annotated[str,Form()],
+           email:Annotated[str,Form()]):
+    cur.execute(f"""
+                INSERT INTO users(id,name,email,password)
+                VALUES('{id}','{name}','{email}','{password}')
+                """)
+    con.commit()
+    print(id, password)
+    return '200'
 app.mount("/", StaticFiles(directory="frontend", html="True"), name="frontend")
 
